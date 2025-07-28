@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚫 Stay Focused - UPtool</title>
+
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon16.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/icon48.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="128x128"
+      href="icons/icon128.png"
+    />
+    <link rel="shortcut icon" href="icons/icon16.png" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #5b73e8 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Animated background particles */
+      .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+          opacity: 0.7;
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg);
+          opacity: 1;
+        }
+      }
+
+      .container {
+        text-align: center;
+        max-width: 600px;
+        padding: 50px 30px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .icon-container {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .main-icon {
+        font-size: 5rem;
+        margin-bottom: 10px;
+        display: block;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .logo {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        background: linear-gradient(45deg, #ffd700, #ffed4e, #fff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 8px 20px;
+        background: rgba(239, 68, 68, 0.9);
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        animation: slideIn 0.5s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .blocked-site {
+        font-size: 1.8rem;
+        margin: 25px 0;
+        color: #ffed4e;
+        font-weight: 700;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        word-break: break-all;
+      }
+
+      .main-message {
+        font-size: 1.3rem;
+        margin: 30px 0;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 500;
+      }
+
+      .motivational {
+        font-style: italic;
+        margin: 25px 0;
+        color: #ffd700;
+        font-size: 1.1rem;
+        padding: 20px;
+        background: rgba(255, 215, 0, 0.1);
+        border-radius: 15px;
+        border-left: 4px solid #ffd700;
+        animation: fadeIn 1s ease-in 0.5s both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .productivity-tip {
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 15px;
+        border-left: 4px solid #3b82f6;
+      }
+
+      .tip-title {
+        font-weight: 600;
+        color: #60a5fa;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .tip-content {
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          margin: 20px;
+          padding: 30px 20px;
+        }
+
+        .main-icon {
+          font-size: 4rem;
+        }
+
+        .logo {
+          font-size: 2.2rem;
+        }
+
+        .blocked-site {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+      <div class="icon-container">
+        <span class="main-icon">🚫</span>
+        <div class="status-badge" id="focusStatus">
+          ⚡ Today's Focus: Active
+        </div>
+      </div>
+
+      <div class="logo">UPtool</div>
+
+      <div class="blocked-site" id="blockedSite">Website Blocked</div>
+
+      <div class="main-message">
+        <p>
+          This website has been blocked to help you stay focused and achieve
+          your goals.
+        </p>
+      </div>
+
+      <div class="motivational" id="motivationalMessage">
+        "Success is the sum of small efforts repeated day in and day out." 💪
+      </div>
+
+      <div class="productivity-tip">
+        <div class="tip-title">💡 Productivity Tip</div>
+        <div class="tip-content" id="productivityTip">
+          Try the Pomodoro Technique: Work for 25 minutes, then take a 5-minute
+          break.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Create floating particles animation
+      function createParticles() {
+        const particlesContainer = document.getElementById("particles");
+        const particleCount = 20;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.top = Math.random() * 100 + "%";
+          particle.style.width = Math.random() * 6 + 2 + "px";
+          particle.style.height = particle.style.width;
+          particle.style.animationDelay = Math.random() * 6 + "s";
+          particle.style.animationDuration = Math.random() * 4 + 4 + "s";
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Get blocked site from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const blockedSite = urlParams.get("site");
+
+      if (blockedSite) {
+        document.getElementById(
+          "blockedSite"
+        ).textContent = `🚫 ${blockedSite}`;
+        // Update page title with site name
+        document.title = `🚫 ${blockedSite} - Blocked by UPtool`;
+      }
+
+      // Enhanced motivational messages
+      const motivationalMessages = [
+        "Success is the sum of small efforts repeated day in and day out. 💪",
+        "Your future self will thank you for staying focused today! 🌟",
+        "Every moment of focus brings you closer to your goals. 🎯",
+        "Discipline is choosing between what you want now and what you want most. 🏆",
+        "Stay focused and never give up on your dreams! ✨",
+        "Great things happen when you focus on what matters most. 🚀",
+        "The difference between ordinary and extraordinary is focus. ⚡",
+        "Focus on being productive instead of busy. 📈",
+        "Success isn't just about what you accomplish, but what you inspire others to do. 🌟",
+        "Don't watch the clock; do what it does. Keep going. ⏰",
+        "Your only limit is your mind. Stay focused and push through! 🧠",
+        "Progress, not perfection. Every step forward counts. 👣",
+      ];
+
+      // Productivity tips
+      const productivityTips = [
+        "Try the Pomodoro Technique: Work for 25 minutes, then take a 5-minute break.",
+        "Write down 3 important tasks each morning and focus on completing them.",
+        "Use the 2-minute rule: If it takes less than 2 minutes, do it now.",
+        "Practice deep work: Eliminate distractions for sustained periods of focus.",
+        "Set specific goals and deadlines to maintain motivation and direction.",
+        "Take regular breaks to maintain high levels of concentration.",
+        "Use time-blocking to allocate specific hours for specific tasks.",
+        "Start with your most challenging task when your energy is highest.",
+        "Keep a distraction list: Write down thoughts that pop up during focus time.",
+        "Create a dedicated workspace that signals it's time to focus.",
+      ];
+
+      // Display random content
+      function updateContent() {
+        const randomMessage =
+          motivationalMessages[
+            Math.floor(Math.random() * motivationalMessages.length)
+          ];
+        const randomTip =
+          productivityTips[Math.floor(Math.random() * productivityTips.length)];
+
+        document.getElementById("motivationalMessage").textContent =
+          randomMessage;
+        document.getElementById("productivityTip").textContent = randomTip;
+      }
+
+      // Load and notify background script that a site was blocked
+      async function notifyBlockedSite() {
+        try {
+          // Notify background script that a site was blocked
+          if (typeof chrome !== "undefined" && chrome.runtime) {
+            chrome.runtime.sendMessage(
+              {
+                action: "siteBlocked",
+                site: blockedSite || "unknown",
+              },
+              function (response) {
+                if (chrome.runtime.lastError) {
+                  console.error(
+                    "Error sending siteBlocked message:",
+                    chrome.runtime.lastError.message
+                  );
+                } else {
+                  console.log("Site blocked notification sent successfully");
+                }
+              }
+            );
+          }
+        } catch (error) {
+          console.error("Error notifying blocked site:", error);
+        }
+      }
+
+      // Check blocking status and update focus message
+      async function updateFocusStatus() {
+        try {
+          if (typeof chrome !== "undefined" && chrome.runtime) {
+            chrome.runtime.sendMessage(
+              {
+                action: "getBlockingStatus",
+              },
+              function (response) {
+                if (chrome.runtime.lastError) {
+                  console.error(
+                    "Error getting blocking status:",
+                    chrome.runtime.lastError.message
+                  );
+                  return;
+                }
+
+                const focusStatusElement =
+                  document.getElementById("focusStatus");
+                if (response && response.isBlockingEnabled) {
+                  focusStatusElement.textContent = "⚡ Today's Focus: Active";
+                  focusStatusElement.style.background =
+                    "rgba(34, 197, 94, 0.9)"; // Green
+                } else {
+                  focusStatusElement.textContent =
+                    "😔 Today's Focus: Not Focused Enough";
+                  focusStatusElement.style.background =
+                    "rgba(239, 68, 68, 0.9)"; // Red
+                }
+              }
+            );
+          } else {
+            // Fallback when Chrome APIs aren't available (like viewing as file://)
+            const focusStatusElement = document.getElementById("focusStatus");
+            focusStatusElement.textContent = "⚡ Today's Focus: Active";
+            focusStatusElement.style.background = "rgba(34, 197, 94, 0.9)"; // Green
+          }
+        } catch (error) {
+          console.error("Error updating focus status:", error);
+          // Fallback on error
+          const focusStatusElement = document.getElementById("focusStatus");
+          focusStatusElement.textContent = "⚡ Today's Focus: Active";
+          focusStatusElement.style.background = "rgba(34, 197, 94, 0.9)"; // Green
+        }
+      }
+
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", function () {
+        createParticles();
+        updateContent();
+        updateFocusStatus();
+        notifyBlockedSite();
+
+        // Update motivational content every 30 seconds
+        setInterval(updateContent, 30000);
+      });
+    </script>
+  </body>
+</html>

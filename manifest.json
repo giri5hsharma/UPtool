@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "UPtool",
+  "version": "1.1.0",
+  "description": "Productivity tool with todo manager and website blocker. Stay focused with task priorities and distracting site blocking.",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "webNavigation",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "UPtool - Productivity & Focus",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "web_accessible_resources": [{
+    "resources": ["blocked.html", "debug-blocked.html", "tab-test.html"],
+    "matches": ["<all_urls>"]
+  }],
+  "author": "Girish Sharma",
+  "homepage_url": "https://github.com/giri5hsharma/web-dev-journey"
+}

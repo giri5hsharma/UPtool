@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎯 UPtool - Focus & Productivity</title>
+
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon16.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/icon48.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="128x128"
+      href="icons/icon128.png"
+    />
+    <link rel="shortcut icon" href="icons/icon16.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="output.css" />
+    <style>
+      .bg-custom {
+        background-image: var(--bg-image, url("images/background.jpg"));
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+
+      .color-primary {
+        background-color: #333446;
+      }
+      .color-secondary {
+        background-color: #7f8caa;
+      }
+      .color-tertiary {
+        background-color: #b8cfce;
+      }
+      .color-lightest {
+        background-color: #eaefef;
+      }
+
+      @keyframes popup {
+        0% {
+          transform: scale(0) translateY(20px);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.05) translateY(-5px);
+        }
+        100% {
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .animate-popup {
+        animation: popup 1s ease-out forwards;
+      }
+
+      /* Confetti Animation */
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        z-index: 1000;
+        pointer-events: none;
+      }
+
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(-100vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      .confetti-fall {
+        animation: confetti-fall 3s linear forwards;
+      }
+
+      /* iPhone-like Toggle Switch Styling */
+      .beautiful-checkbox {
+        position: relative;
+        width: 51px;
+        height: 31px;
+        background: #e5e5e7;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04),
+          inset 0 1px 7px rgba(0, 0, 0, 0.1);
+      }
+
+      .beautiful-checkbox::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 27px;
+        height: 27px;
+        background: #ffffff;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+      }
+
+      #blockingToggle:checked + .beautiful-checkbox {
+        background: #34c759;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04),
+          inset 0 1px 7px rgba(0, 0, 0, 0.1);
+      }
+
+      #blockingToggle:checked + .beautiful-checkbox::before {
+        transform: translateX(20px);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      #blockingToggle:focus + .beautiful-checkbox {
+        outline: none;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04),
+          inset 0 1px 7px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(52, 199, 89, 0.2);
+      }
+
+      /* Hide the actual checkbox */
+      #blockingToggle {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Custom Checkbox Styling */
+      .todo-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #10b981;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s ease;
+      }
+
+      .todo-checkbox:hover {
+        border-color: #059669;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+
+      .todo-checkbox:checked {
+        background: #10b981;
+        border-color: #10b981;
+      }
+
+      .todo-checkbox:checked::after {
+        content: "✓";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      /* Disabled checkbox styling */
+      .todo-checkbox:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .todo-checkbox:disabled:hover {
+        box-shadow: none;
+      }
+
+      /* Input placeholder styling */
+      input::placeholder {
+        color: #6b7280;
+        transition: color 0.2s ease;
+      }
+
+      input:hover::placeholder {
+        color: #6b7280;
+      }
+
+      input:focus::placeholder {
+        color: #6b7280;
+      }
+
+      /* Website icon styling */
+      .website-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 2px;
+        object-fit: cover;
+        background-color: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        flex-shrink: 0;
+      }
+
+      .website-icon.loading {
+        background: linear-gradient(
+          90deg,
+          #f3f4f6 25%,
+          #e5e7eb 50%,
+          #f3f4f6 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      .website-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 0;
+      }
+
+      .website-item:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Modern Header Styles */
+      .modern-header {
+        font-family: "Inter", "Poppins", -apple-system, BlinkMacSystemFont,
+          sans-serif;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 24px 32px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      }
+
+      .app-title {
+        font-family: "Poppins", "Inter", sans-serif;
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #f0f9ff 50%,
+          #e0f2fe 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+      }
+
+      .app-tagline {
+        font-family: "Inter", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        letter-spacing: 0.5px;
+        margin-bottom: 20px;
+      }
+
+      .datetime-container {
+        font-family: "Inter", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .current-time {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #60a5fa;
+        text-shadow: 0 2px 8px rgba(96, 165, 250, 0.4);
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+      }
+
+      .current-date,
+      .current-day {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.75);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        letter-spacing: 0.3px;
+      }
+
+      .current-day {
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .app-title {
+          font-size: 2.8rem;
+        }
+        .current-time {
+          font-size: 1.8rem;
+        }
+        .modern-header {
+          padding: 20px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Notification Popup -->
+    <div
+      id="notification"
+      class="fixed left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-500 ease-out opacity-60"
+      style="top: -60px"
+    >
+      <span class="text-sm font-medium"
+        >New todo item added! Let's get going and get the bag!</span
+      >
+    </div>
+
+    <!-- Confirmation Popup Modal -->
+    <div
+      id="confirmationModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl p-6 mx-4 max-w-md w-full"
+        style="background-color: #eaefef"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold" style="color: #333446">
+            Restore Task
+          </h3>
+          <button
+            id="closeConfirmationModal"
+            class="text-gray-400 hover:text-gray-600 text-xl"
+          >
+            ×
+          </button>
+        </div>
+        <div class="mb-6">
+          <p class="text-sm" style="color: #7f8caa">
+            This action will put the todo item back in progress. Are you sure
+            you want to continue?
+          </p>
+        </div>
+        <div class="flex gap-3 justify-end">
+          <button
+            id="confirmationNo"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200"
+          >
+            No
+          </button>
+          <button
+            id="confirmationYes"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="min-h-screen bg-custom flex">
+      <!-- Left Sidebar - Ongoing Tasks -->
+      <div class="w-64 flex-shrink-0 p-4 flex items-center justify-center">
+        <div
+          id="todoDisplayContainer"
+          class="backdrop-blur-sm rounded-lg shadow-lg w-full hidden transition-opacity duration-300 opacity-70 hover:opacity-95"
+          style="background-color: #c0d8d7"
+        >
+          <!-- Ongoing Section Header -->
+          <div
+            id="ongoingHeader"
+            class="p-4 cursor-pointer flex items-center justify-between hover:opacity-90 transition-opacity"
+          >
+            <span class="text-sm font-semibold" style="color: #333446"
+              >Ongoing Tasks</span
+            >
+            <span
+              id="ongoingToggleIcon"
+              class="transform transition-transform duration-200 text-sm"
+              >▼</span
+            >
+          </div>
+
+          <!-- Todo Items Container -->
+          <div
+            id="todoContainer"
+            class="px-2 pb-2 space-y-1 text-xs overflow-hidden transition-all duration-300 max-h-80 overflow-y-auto"
+          >
+            <!-- Todo items will appear here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="flex-1 flex flex-col items-center justify-center gap-6 py-20">
+        <!-- Modern Header with Date/Time -->
+        <div class="modern-header text-center">
+          <!-- App Title and Tagline -->
+          <h1 class="app-title">UPtool</h1>
+          <p class="app-tagline">Focus • Productivity • Growth</p>
+
+          <!-- Date and Time Display -->
+          <div class="datetime-container">
+            <div class="current-time" id="currentTime">Loading time...</div>
+            <div class="current-date" id="currentDate">Loading date...</div>
+            <div class="current-day" id="currentDay">Loading day...</div>
+          </div>
+        </div>
+
+        <!-- Mode Selection Dropdown -->
+        <div class="w-2/5 p-4 mb-4">
+          <div class="flex items-center justify-center gap-3">
+            <label class="text-lg font-bold text-white drop-shadow-lg"
+              >Mode:</label
+            >
+            <select
+              id="modeSelector"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+              style="background-color: rgba(127, 140, 170, 0.2)"
+            >
+              <option value="todo" selected>📝 Todo List</option>
+              <option value="blocker">🚫 Site Blocker</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div
+          class="w-2/5 backdrop-blur-sm p-4 rounded-lg shadow-lg mb-2 transition-opacity duration-300 opacity-70 hover:opacity-95"
+          style="background-color: rgba(234, 239, 239, 0.6)"
+        >
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-medium" style="color: #333446"
+              >Progress</span
+            >
+            <span
+              id="progressText"
+              class="text-sm font-medium"
+              style="color: #333446"
+              >0/0</span
+            >
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+            <div
+              id="progressBar"
+              class="h-3 rounded-full transition-all duration-500 ease-out"
+              style="
+                width: 0%;
+                background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+              "
+            ></div>
+          </div>
+        </div>
+
+        <!-- Todo Input Container -->
+        <div
+          id="todoSection"
+          class="backdrop-blur-sm p-8 rounded-lg shadow-lg w-2/5 transition-opacity duration-300 opacity-70 hover:opacity-95"
+          style="background-color: rgba(234, 239, 239, 0.6)"
+        >
+          <h2
+            class="text-2xl font-bold mb-6 text-center"
+            style="color: #333446"
+          >
+            Add New Task
+          </h2>
+
+          <!-- Search Bar and Reset Button -->
+          <div class="mb-4">
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search tasks..."
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+                style="background-color: rgba(127, 140, 170, 0.2)"
+              />
+              <button
+                id="resetTodosBtn"
+                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 text-sm font-medium"
+                title="Clear all todos"
+              >
+                🗑️ Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Todo Input -->
+          <div class="mb-4">
+            <input
+              type="text"
+              id="todoInput"
+              placeholder="Add a new todo..."
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent"
+              style="background-color: rgba(127, 140, 170, 0.3)"
+            />
+          </div>
+
+          <!-- Priority and Due Date Controls -->
+          <div class="flex gap-4 mb-4">
+            <div class="flex-1">
+              <label
+                class="block text-sm font-medium mb-1"
+                style="color: #333446"
+                >Priority</label
+              >
+              <select
+                id="prioritySelect"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+                style="background-color: rgba(127, 140, 170, 0.2)"
+              >
+                <option value="low">🟢 Low</option>
+                <option value="medium" selected>🟡 Medium</option>
+                <option value="high">🔴 High</option>
+              </select>
+            </div>
+            <div class="flex-1">
+              <label
+                class="block text-sm font-medium mb-1"
+                style="color: #333446"
+                >Due Date</label
+              >
+              <input
+                type="date"
+                id="dueDateInput"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+                style="background-color: rgba(127, 140, 170, 0.2)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Website Blocker Section -->
+        <div
+          id="blockerSection"
+          class="backdrop-blur-sm p-6 rounded-lg shadow-lg w-2/5 transition-opacity duration-300 opacity-70 hover:opacity-95 hidden"
+          style="background-color: rgba(184, 207, 206, 0.6)"
+        >
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold" style="color: #333446">
+              🚫 Focus Mode
+            </h2>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="blockingToggle" class="sr-only" />
+              <div class="beautiful-checkbox"></div>
+            </label>
+          </div>
+
+          <div class="mb-4">
+            <div class="flex gap-2 mb-3">
+              <input
+                type="text"
+                id="websiteInput"
+                placeholder="Enter website to block (e.g., facebook.com)"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+                style="background-color: rgba(127, 140, 170, 0.2)"
+              />
+              <button
+                id="addWebsiteBtn"
+                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 text-sm font-medium"
+              >
+                Block
+              </button>
+            </div>
+
+            <!-- Quick Add Buttons -->
+            <div class="flex flex-wrap gap-2 mb-3">
+              <button
+                class="quick-block-btn flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                data-site="facebook.com"
+              >
+                <img
+                  src="https://www.google.com/s2/favicons?domain=facebook.com&sz=12"
+                  class="w-3 h-3"
+                  alt="Facebook"
+                  onerror="this.style.display='none'"
+                />
+                Facebook
+              </button>
+              <button
+                class="quick-block-btn flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                data-site="instagram.com"
+              >
+                <img
+                  src="https://www.google.com/s2/favicons?domain=instagram.com&sz=12"
+                  class="w-3 h-3"
+                  alt="Instagram"
+                  onerror="this.style.display='none'"
+                />
+                Instagram
+              </button>
+              <button
+                class="quick-block-btn flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                data-site="twitter.com"
+              >
+                <img
+                  src="https://www.google.com/s2/favicons?domain=twitter.com&sz=12"
+                  class="w-3 h-3"
+                  alt="Twitter"
+                  onerror="this.style.display='none'"
+                />
+                Twitter
+              </button>
+              <button
+                class="quick-block-btn flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                data-site="youtube.com"
+              >
+                <img
+                  src="https://www.google.com/s2/favicons?domain=youtube.com&sz=12"
+                  class="w-3 h-3"
+                  alt="YouTube"
+                  onerror="this.style.display='none'"
+                />
+                YouTube
+              </button>
+              <button
+                class="quick-block-btn flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                data-site="reddit.com"
+              >
+                <img
+                  src="https://www.google.com/s2/favicons?domain=reddit.com&sz=12"
+                  class="w-3 h-3"
+                  alt="Reddit"
+                  onerror="this.style.display='none'"
+                />
+                Reddit
+              </button>
+            </div>
+          </div>
+
+          <!-- Blocked Sites List -->
+          <div
+            class="mb-4 px-6 py-3 bg-white bg-opacity-20"
+            style="border-radius: 2rem"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-sm font-medium" style="color: #333446"
+                >Blocked Sites</span
+              >
+              <span id="blockedCount" class="text-xs" style="color: #7f8caa"
+                >0 sites</span
+              >
+            </div>
+            <div
+              id="blockedSitesList"
+              class="space-y-1 max-h-32 overflow-y-auto"
+            >
+              <!-- Blocked sites will appear here -->
+            </div>
+          </div>
+
+          <!-- Focus Stats -->
+          <div class="bg-white bg-opacity-50 rounded-lg px-6 py-3">
+            <div class="flex justify-between items-center text-sm">
+              <span style="color: #333446">Today's Focus:</span>
+              <span
+                id="focusStatusMain"
+                style="color: #333446; font-weight: 600"
+                >Active</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar - Completed Tasks -->
+      <div class="w-64 flex-shrink-0 p-4 flex items-center justify-center">
+        <div
+          id="completedTodosSection"
+          class="backdrop-blur-sm rounded-lg shadow-lg w-full hidden transition-opacity duration-300 opacity-70 hover:opacity-95"
+          style="background-color: #7f8caa"
+        >
+          <!-- Completed Section Header -->
+          <div
+            id="completedHeader"
+            class="p-4 cursor-pointer flex items-center justify-between hover:opacity-90 transition-opacity"
+          >
+            <span class="text-sm font-semibold" style="color: #333446"
+              >Completed Tasks</span
+            >
+            <span
+              id="completedToggleIcon"
+              class="transform transition-transform duration-200 text-sm"
+              >▼</span
+            >
+          </div>
+
+          <!-- Completed Items Container -->
+          <div
+            id="completedContainer"
+            class="px-2 pb-2 space-y-1 text-xs hidden overflow-hidden transition-all duration-300 max-h-80 overflow-y-auto"
+          >
+            <!-- Completed todo items will appear here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="damn.js"></script>
+  </body>
+</html>
